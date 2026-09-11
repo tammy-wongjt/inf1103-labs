@@ -28,3 +28,7 @@ while True:
     inventory += quantity
     print(f"Current inventory: {inventory}")
 
+    # 7. Trigger Overstock Alert: If the total inventory exceeds 500 units
+    if inventory > 500:
+        print("Overstock Alert! Inventory Exceeded 500 units.")
+        break
