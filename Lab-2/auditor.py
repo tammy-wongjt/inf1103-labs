@@ -32,3 +32,8 @@ while True:
     if inventory > 500:
         print("Overstock Alert! Inventory Exceeded 500 units.")
         break
+
+# 8. Reporting: When the user types quit, print the Total Units Processed and the Number of Failed/Rejected Entries.
+print("\n--- Audit Report ---")
+print(f"Total Units Processed: {inventory}")
+print(f"Number of Failed/Rejected Entries: {failed_entries}")
