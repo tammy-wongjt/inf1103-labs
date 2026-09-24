@@ -46,6 +46,8 @@ def main():
         total_tax += tax
         deliveries_processed += 1
 
+        history.append(result)
+
         print(f"Current inventory: {inventory}")
         print(f"Tax for this delivery: ${tax:.2f}")
 
