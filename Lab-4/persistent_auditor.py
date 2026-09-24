@@ -18,6 +18,14 @@ def load_inventory():
 
     return total, history
 
+def save_inventory(total, history):
+    with open(FILENAME, "w") as f:
+        f.write(f"Total: {total}\n")
+        f.write("History:\n")
+        for amount in history:
+            f.write(f"{amount}\n")
+    print(f"\nInventory saved to {FILENAME}")
+
 def main():
     inventory, history = load_inventory()
 
@@ -55,6 +63,8 @@ def main():
         if inventory > 500:
             print("Overstock alert! Inventory exceeded 500 units.")
             break
+
+    save_inventory(inventory, history)
 
     generate_report(inventory, failed_entries, deliveries_processed, total_tax)
 
