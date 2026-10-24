@@ -1,0 +1,26 @@
+[
+    {
+        "id": "1",
+        "name": "Phone",
+        "price": 2999.0,
+        "stock": 100
+    },
+    {
+        "id": "001",
+        "name": "Smart watch",
+        "price": 300.0,
+        "stock": 120
+    },
+    {
+        "id": "2",
+        "name": "TV",
+        "price": 4000.0,
+        "stock": 90
+    },
+    {
+        "id": "3",
+        "name": "laptop",
+        "price": 3000.0,
+        "stock": 100
+    }
+]
