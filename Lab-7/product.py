@@ -38,6 +38,7 @@ class Product:
         # Print the product's details
         print(f"ID: {self.__product_id} | Name: {self.__name} | Price: ${self.__price:.2f} | Stock: {self.__stock}")
 
+
     def to_dict(self):
         # convert to dict for JSON saving.
         return {
@@ -63,6 +64,10 @@ class PhysicalProduct(Product):
     def get_weight(self):
         return self.__weight
 
+    def display_information(self):
+        super().display_information()
+        print(f"Weight: {self.__weight} kg")
+
 
 class DigitalProduct(Product):
 
@@ -72,3 +77,7 @@ class DigitalProduct(Product):
 
     def get_download_size(self):
         return self.__download_size
+
+    def display_information(self):
+        super().display_information()
+        print(f"Download size: {self.__download_size} MB")
