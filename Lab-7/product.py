@@ -52,6 +52,7 @@ class Product:
         # create a Product from a dict (for loading from JSON).
         return cls(data["id"], data["name"], data["price"], data["stock"])
 
+
 class PhysicalProduct(Product):
 
     # add weight
@@ -61,3 +62,13 @@ class PhysicalProduct(Product):
 
     def get_weight(self):
         return self.__weight
+
+
+class DigitalProduct(Product):
+
+    def __init__(self, product_id, name, price, stock, download_size):
+        super().__init__(product_id, name, price, stock)
+        self.__download_size = download_size
+
+    def get_download_size(self):
+        return self.__download_size
