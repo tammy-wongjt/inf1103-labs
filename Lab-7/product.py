@@ -1,4 +1,6 @@
-class Product:
+from abc import ABC, abstractmethod
+
+class Product(ABC):
     def __init__(self, product_id, name, price, stock):
         self.__product_id = product_id
         self.__name = name
@@ -53,6 +55,11 @@ class Product:
         # create a Product from a dict (for loading from JSON).
         return cls(data["id"], data["name"], data["price"], data["stock"])
 
+    @abstractmethod
+    def get_fulfilment_info(self):
+        # returns a message describing how the product is fulfilled (from the child)
+        pass
+
 
 class PhysicalProduct(Product):
 
@@ -68,6 +75,9 @@ class PhysicalProduct(Product):
         super().display_information()
         print(f"Weight: {self.__weight} kg")
 
+    def get_fulfilment_info(self):
+        print(f"This product requires physical shipping")
+
 
 class DigitalProduct(Product):
 
@@ -81,3 +91,6 @@ class DigitalProduct(Product):
     def display_information(self):
         super().display_information()
         print(f"Download size: {self.__download_size} MB")
+
+    def get_fulfilment_info(self):
+            print(f"This product is delivered digitally")
