@@ -50,71 +50,8 @@ class Product(ABC):
             "stock": self.__stock
         }
 
-    @classmethod
-    def from_dict(cls, data):
-        # create a Product from a dict (for loading from JSON).
-        return cls(data["id"], data["name"], data["price"], data["stock"])
 
     @abstractmethod
     def get_fulfilment_info(self):
         # returns a message describing how the product is fulfilled (from the child)
         pass
-
-
-class CanBeShipped(ABC):
-
-    @abstractmethod
-    def calculate_shipping_cost(self):
-        # return shipping cost for this product
-        pass
-
-
-class PhysicalProduct(Product, CanBeShipped):
-
-    # add weight
-    def __init__(self, product_id, name, price, stock, weight):
-        super().__init__(product_id, name, price, stock)
-        self.__weight = weight
-
-    def get_weight(self):
-        return self.__weight
-
-    def display_information(self):
-        super().display_information()
-        print(f"Weight: {self.__weight} kg")
-
-    def get_fulfilment_info(self):
-        print(f"This product requires physical shipping")
-
-    def calculate_shipping_cost(self):
-        return self.get_weight() * 3.00  # $3 per kg
-
-    def to_dict(self):
-        data = super().to_dict()
-        data["type"] = "physical"
-        data["weight"] = self.__weight
-        return data
-
-class DigitalProduct(Product):
-
-    def __init__(self, product_id, name, price, stock, download_size):
-        super().__init__(product_id, name, price, stock)
-        self.__download_size = download_size
-
-    def get_download_size(self):
-        return self.__download_size
-
-    def display_information(self):
-        super().display_information()
-        print(f"Download size: {self.__download_size} MB")
-
-    def get_fulfilment_info(self):
-            print(f"This product is delivered digitally")
-
-    def to_dict(self):
-        data = super().to_dict()
-        data["type"] = "digital"
-        data["download_size"] = self.__download_size
-        return data
-
-
