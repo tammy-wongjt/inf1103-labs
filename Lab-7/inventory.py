@@ -1,4 +1,5 @@
-from product import Product, PhysicalProduct, DigitalProduct
+from physical_product import PhysicalProduct
+from digital_product import DigitalProduct
 
 class Inventory:
     def __init__(self):
@@ -55,9 +56,6 @@ class Inventory:
         """Convert to list of dicts for JSON saving."""
         return [product.to_dict() for product in self.__products]
 
-    def load_from_list_of_dicts(self, data):
-        """Replace inventory contents with products from a list of dicts."""
-        self.__products = [Product.from_dict(item) for item in data]
 
     #lab-7
     def load_from_list_of_dicts(self, data):
@@ -66,11 +64,9 @@ class Inventory:
         for item in data:
             product_type = item.get("type", "physical")  # default for old data
             if product_type == "physical":
-                p = PhysicalProduct(item["id"], item["name"], item["price"], item["stock"], item["weight"]
-                )
+                p = PhysicalProduct(item["id"], item["name"], item["price"], item["stock"], item["weight"])
             elif product_type == "digital":
-                p = DigitalProduct(item["id"], item["name"], item["price"], item["stock"], item["download_size"]
-                )
+                p = DigitalProduct(item["id"], item["name"], item["price"], item["stock"], item["download_size"])
             else:
                 print(f"Warning: unknown product type '{product_type}' — skipped")
                 continue

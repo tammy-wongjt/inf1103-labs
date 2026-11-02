@@ -1,6 +1,8 @@
 import json
-from product import Product, PhysicalProduct, DigitalProduct
+from product import Product
 from inventory import Inventory
+from physical_product import PhysicalProduct
+from digital_product import DigitalProduct
 
 FILENAME = "inventory.json"
 
@@ -33,6 +35,22 @@ def save_inventory(inventory):
 
 
 # ---------- Menu Actions ----------
+# def handle_add(inventory):
+#     print("Add New Product")
+#     product_id = input("Product ID: ").strip()
+#     name = input("Product Name: ").strip()
+
+#     try:
+#         price = float(input("Price: "))
+#         stock = int(input("Stock Quantity: "))
+#     except ValueError:
+#         print("Error: Price must be a number, stock must be an integer.")
+#         return
+
+#     new_product = Product(product_id, name, price, stock)
+#     if inventory.add_product(new_product):
+#         print("Product added successfully!")
+
 def handle_add(inventory):
     print("Add New Product")
     product_id = input("Product ID: ").strip()
@@ -45,7 +63,29 @@ def handle_add(inventory):
         print("Error: Price must be a number, stock must be an integer.")
         return
 
-    new_product = Product(product_id, name, price, stock)
+    print("Product type:")
+    print("  1. Physical")
+    print("  2. Digital")
+    type_choice = input("Choose (1/2): ").strip()
+
+    if type_choice == "1":
+        try:
+            weight = float(input("Weight (kg): "))
+        except ValueError:
+            print("Error: Weight must be a number.")
+            return
+        new_product = PhysicalProduct(product_id, name, price, stock, weight)
+    elif type_choice == "2":
+        try:
+            download_size = float(input("Download size (MB): "))
+        except ValueError:
+            print("Error: Download size must be a number.")
+            return
+        new_product = DigitalProduct(product_id, name, price, stock, download_size)
+    else:
+        print("Invalid type.")
+        return
+
     if inventory.add_product(new_product):
         print("Product added successfully!")
 
@@ -85,6 +125,9 @@ def handle_search(inventory):
     print("Product Found")
     print("-" * 48)
     product.display_information()
+    print(f"Fulfilment: {product.get_fulfilment_info()}")    # ← NEW
+    if hasattr(product, "calculate_shipping_cost"):
+        print(f"Shipping cost: ${product.calculate_shipping_cost():.2f}")
     print("-" * 48)
 
 
@@ -130,43 +173,6 @@ def main():
         else:
             print("Invalid option. Please try again.")
 
-def handle_add(inventory):
-    print("Add New Product")
-    product_id = input("Product ID: ").strip()
-    name = input("Product Name: ").strip()
-
-    try:
-        price = float(input("Price: "))
-        stock = int(input("Stock Quantity: "))
-    except ValueError:
-        print("Error: Price must be a number, stock must be an integer.")
-        return
-
-    print("Product type:")
-    print("  1. Physical")
-    print("  2. Digital")
-    type_choice = input("Choose (1/2): ").strip()
-
-    if type_choice == "1":
-        try:
-            weight = float(input("Weight (kg): "))
-        except ValueError:
-            print("Error: Weight must be a number.")
-            return
-        new_product = PhysicalProduct(product_id, name, price, stock, weight)
-    elif type_choice == "2":
-        try:
-            download_size = float(input("Download size (MB): "))
-        except ValueError:
-            print("Error: Download size must be a number.")
-            return
-        new_product = DigitalProduct(product_id, name, price, stock, download_size)
-    else:
-        print("Invalid type.")
-        return
-
-    if inventory.add_product(new_product):
-        print("Product added successfully!")
 
 if __name__ == "__main__":
     main()
