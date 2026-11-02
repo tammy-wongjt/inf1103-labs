@@ -35,21 +35,6 @@ def save_inventory(inventory):
 
 
 # ---------- Menu Actions ----------
-# def handle_add(inventory):
-#     print("Add New Product")
-#     product_id = input("Product ID: ").strip()
-#     name = input("Product Name: ").strip()
-
-#     try:
-#         price = float(input("Price: "))
-#         stock = int(input("Stock Quantity: "))
-#     except ValueError:
-#         print("Error: Price must be a number, stock must be an integer.")
-#         return
-
-#     new_product = Product(product_id, name, price, stock)
-#     if inventory.add_product(new_product):
-#         print("Product added successfully!")
 
 def handle_add(inventory):
     print("Add New Product")
@@ -125,7 +110,7 @@ def handle_search(inventory):
     print("Product Found")
     print("-" * 48)
     product.display_information()
-    print(f"Fulfilment: {product.get_fulfilment_info()}")    # ← NEW
+    print(f"Fulfilment: {product.get_fulfilment_info()}")
     if hasattr(product, "calculate_shipping_cost"):
         print(f"Shipping cost: ${product.calculate_shipping_cost():.2f}")
     print("-" * 48)
