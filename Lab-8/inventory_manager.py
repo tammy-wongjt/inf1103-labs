@@ -9,7 +9,7 @@ FILENAME = "inventory.json"
 
 
 # ---------- File Handling ----------
-def load_inventory():
+def load_inventory() -> Inventory:
     """Load inventory.json and return an Inventory object."""
     try:
         with open(FILENAME, "r") as f:
@@ -27,7 +27,7 @@ def load_inventory():
         return Inventory()
 
 
-def save_inventory(inventory):
+def save_inventory(inventory: Inventory) -> None:
     """Save the inventory to JSON."""
     print("Saving inventory...")
     with open(FILENAME, "w") as f:
@@ -37,7 +37,7 @@ def save_inventory(inventory):
 
 # ---------- Menu Actions ----------
 
-def handle_add(inventory):
+def handle_add(inventory: Inventory) -> None:
     print("Add New Product")
     product_id = input("Product ID: ").strip()
     name = input("Product Name: ").strip()
@@ -61,6 +61,7 @@ def handle_add(inventory):
     print("  2. Digital")
     type_choice = input("Choose (1/2): ").strip()
 
+    new_product: Product
     if type_choice == "1":
         try:
             weight = float(input("Weight (kg): "))
@@ -83,7 +84,7 @@ def handle_add(inventory):
         print("Product added successfully!")
 
 
-def handle_update(inventory):
+def handle_update(inventory: Inventory) -> None:
     print("Update Stock")
     product_id = input("Enter Product ID: ").strip()
 
@@ -106,7 +107,7 @@ def handle_update(inventory):
         print("Stock updated successfully!")
 
 
-def handle_search(inventory):
+def handle_search(inventory: Inventory) -> None:
     print("Search Product")
     product_id = input("Enter Product ID: ").strip()
 
@@ -123,13 +124,13 @@ def handle_search(inventory):
         print(f"Shipping cost: ${product.calculate_shipping_cost():.2f}")
     print("-" * 48)
 
-def handle_remove(inventory):
+def handle_remove(inventory: Inventory) -> None:
     print("Remove Product")
     product_id = input("Enter Product ID: ").strip()
     inventory.remove_product(product_id)
 
 
-def print_menu():
+def print_menu() -> None:
     print("----------- MENU -----------")
     print("1. Display All Products")
     print("2. Add Product")
@@ -142,7 +143,7 @@ def print_menu():
 
 
 # ---------- Main ----------
-def main():
+def main() -> None:
     print("=" * 40)
     print("INVENTORY MANAGEMENT SYSTEM")
     print("=" * 40)

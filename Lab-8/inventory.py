@@ -4,16 +4,16 @@ from supplier import Supplier
 from product import Product
 
 class Inventory:
-    def __init__(self):
+    def __init__(self) -> None:
         self.__products: list[Product] = []
 
-    def get_products(self):
+    def get_products(self) -> list[Product]:
         return self.__products
 
-    def is_empty(self):
+    def is_empty(self) -> bool:
         return len(self.__products) == 0
 
-    def count(self):
+    def count(self) -> int:
         return len(self.__products)
 
     # CRUD
@@ -44,7 +44,7 @@ class Inventory:
 
     def update_stock(self, product_id: str, new_stock: int) -> bool:
         """Update the stock of a product by ID."""
-        product = self.find(product_id)
+        product = self.find_product(product_id)
         if product is None:
             print("Product not found.")
             return False
