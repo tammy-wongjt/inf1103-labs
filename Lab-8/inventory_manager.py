@@ -87,7 +87,7 @@ def handle_update(inventory):
     print("Update Stock")
     product_id = input("Enter Product ID: ").strip()
 
-    product = inventory.search_product(product_id)
+    product = inventory.find_product(product_id)
     if product is None:
         print("Product not found.")
         return
@@ -110,7 +110,7 @@ def handle_search(inventory):
     print("Search Product")
     product_id = input("Enter Product ID: ").strip()
 
-    product = inventory.search_product(product_id)
+    product = inventory.find_product(product_id)
     if product is None:
         print("Product not found.")
         return
@@ -123,6 +123,11 @@ def handle_search(inventory):
         print(f"Shipping cost: ${product.calculate_shipping_cost():.2f}")
     print("-" * 48)
 
+def handle_remove(inventory):
+    print("Remove Product")
+    product_id = input("Enter Product ID: ").strip()
+    inventory.remove_product(product_id)
+
 
 def print_menu():
     print("----------- MENU -----------")
@@ -130,8 +135,9 @@ def print_menu():
     print("2. Add Product")
     print("3. Update Stock")
     print("4. Search Product")
-    print("5. Save Inventory")
-    print("6. Exit")
+    print("5. Remove Product")
+    print("6. Save Inventory")
+    print("7. Exit")
     print("----------------------------")
 
 
@@ -156,8 +162,10 @@ def main():
         elif option == "4":
             handle_search(inventory)
         elif option == "5":
-            save_inventory(inventory)
+            handle_remove(inventory)
         elif option == "6":
+            save_inventory(inventory)
+        elif option == "7":
             print("Saving inventory before exit...")
             save_inventory(inventory)
             print("Thank you for using Inventory Management System.")
