@@ -5,6 +5,9 @@ from physical_product import PhysicalProduct
 from digital_product import DigitalProduct
 from supplier import Supplier
 from product_factory import ProductFactory
+import csv
+from product_factory import ProductFactory
+
 
 FILENAME = "inventory.json"
 
@@ -157,6 +160,38 @@ def handle_remove(inventory: Inventory) -> None:
     print("Remove Product")
     product_id = input("Enter Product ID: ").strip()
     inventory.remove_product(product_id)
+
+
+def load_products(path: str, inventory: Inventory, supplier: Supplier) -> None:
+    """Load products from a CSV file and add them to the inventory."""
+    try:
+        file = open(path, newline="")
+    except FileNotFoundError:
+        print(f"Products file not found: {path}")
+    else:
+        loaded = 0
+        with file:
+            reader = csv.reader(file)
+            next(reader, None)  # Skip the header row
+            for row in reader:
+                try:
+                    # row: [product_type, product_id, name, price, stock_quantity]
+                    product_type = row[0]
+                    product_id = row[1]
+                    name = row[2]
+                    price = float(row[3])   # This will raise ValueError for "abc"
+                    stock = int(row[4])
+                    
+                    product = ProductFactory.create(
+                        product_type, product_id, name, price, stock, supplier
+                    )
+                    if inventory.add_product(product):
+                        loaded += 1
+                except ValueError as e:
+                    print(f"Skipping invalid row {row}: {e}")
+        print(f"{loaded} products loaded.")
+    finally:
+        print("Load attempt finished.")
 
 
 def print_menu() -> None:
