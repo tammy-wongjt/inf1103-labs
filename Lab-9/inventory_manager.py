@@ -85,6 +85,12 @@ def handle_add(inventory: Inventory) -> None:
     if inventory.add_product(new_product):
         print("Product added successfully!")
 
+    try:
+        new_product = ProductFactory.create(...)
+    except ValueError as e:
+        print(f"Error creating product: {e}")
+        return
+
 
 def handle_update(inventory: Inventory) -> None:
     print("Update Stock")
