@@ -6,7 +6,9 @@ from digital_product import DigitalProduct
 from supplier import Supplier
 from product_factory import ProductFactory
 import csv
-from product_factory import ProductFactory
+from order import Order
+from orderline import OrderLine
+from discounts import NoDiscount, PercentageDiscount, BulkDiscount, StudentDiscount
 
 
 FILENAME = "inventory.json"
@@ -183,7 +185,7 @@ def load_products(path: str, inventory: Inventory, supplier: Supplier) -> None:
                     stock = int(row[4])
                     
                     product = ProductFactory.create(
-                        product_type, product_id, name, price, stock, supplier
+                        product_type, product_id, name, price, stock, supplier, 0.0
                     )
                     if inventory.add_product(product):
                         loaded += 1
@@ -193,6 +195,50 @@ def load_products(path: str, inventory: Inventory, supplier: Supplier) -> None:
     finally:
         print("Load attempt finished.")
 
+def handle_order(inventory: Inventory) -> None:
+    print("Create a New Order")
+    order_id = input("Order ID: ").strip()
+    order = Order(order_id)
+
+    while True:
+        product_id = input("Enter Product ID to add (or 'done' to finish): ").strip()
+        if product_id.lower() == 'done':
+            break
+        product = inventory.find_product(product_id)
+        if product is None:
+            print("Product not found.")
+            continue
+        
+        try:
+            quantity = int(input("Quantity: "))
+            line = OrderLine(product, quantity) # This will test your validation!
+            order.add_order_line(product, quantity)
+            print("Item added to order.")
+        except ValueError as e:
+            print(f"Error: {e}") # Catches negative/zero quantity
+
+    # Apply Discount
+    print("\nApply Discount:")
+    print("1. No Discount")
+    print("2. Percentage (10%)")
+    print("3. Bulk ($20 off if total >= 200)")
+    print("4. Student (5% off)")
+    choice = input("Choose (1-4): ").strip()
+
+    if choice == "2":
+        order.set_discount(PercentageDiscount(10))
+    elif choice == "3":
+        order.set_discount(BulkDiscount(200, 20))
+    elif choice == "4":
+        order.set_discount(StudentDiscount())
+    else:
+        order.set_discount(NoDiscount())
+
+    # Display the result
+    print("\n--- Order Summary ---")
+    order.display_information() # If you have this method
+    print(f"Final Total: ${order.calculate_total():.2f}")
+
 
 def print_menu() -> None:
     print("----------- MENU -----------")
@@ -201,8 +247,9 @@ def print_menu() -> None:
     print("3. Update Stock")
     print("4. Search Product")
     print("5. Remove Product")
-    print("6. Save Inventory")
-    print("7. Exit")
+    print("6. Create Order & Apply Discount")
+    print("7. Save Inventory")
+    print("8. Exit")
     print("----------------------------")
 
 
@@ -229,8 +276,10 @@ def main() -> None:
         elif option == "5":
             handle_remove(inventory)
         elif option == "6":
-            save_inventory(inventory)
+            handle_order(inventory)
         elif option == "7":
+            save_inventory(inventory)
+        elif option == "8":
             print("Saving inventory before exit...")
             save_inventory(inventory)
             print("Thank you for using Inventory Management System.")

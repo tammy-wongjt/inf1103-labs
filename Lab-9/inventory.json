@@ -1,0 +1,15 @@
+[
+    {
+        "id": "P001",
+        "name": "Laptop",
+        "price": 2000.0,
+        "stock": 100,
+        "supplier": {
+            "supplier_id": "S001",
+            "name": "Amber",
+            "contact_email": "awjk@gmail.com"
+        },
+        "type": "physical",
+        "weight": 2.0
+    }
+]
