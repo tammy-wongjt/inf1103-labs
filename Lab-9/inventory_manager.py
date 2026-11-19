@@ -36,6 +36,44 @@ def save_inventory(inventory: Inventory) -> None:
     print(f"Inventory saved successfully to {FILENAME}.")
 
 
+def get_positive_float(prompt: str) -> float:
+    """Keep asking until the user enters a valid number greater than zero."""
+    while True:
+        try:
+            value = float(input(prompt))
+            if value <= 0:
+                print("Please enter a number greater than zero.")
+                continue
+            return value
+        except ValueError:
+            print("Please enter a valid number, e.g. 12.50")
+
+
+def get_non_negative_int(prompt: str) -> int:
+    """Keep asking until the user enters a valid whole number that is 0 or greater."""
+    while True:
+        try:
+            value = int(input(prompt))
+            if value < 0:
+                print("Please enter a number that is zero or greater.")
+                continue
+            return value
+        except ValueError:
+            print("Please enter a valid whole number.")
+
+
+def get_positive_int(prompt: str) -> int:
+    """Keep asking until the user enters a valid whole number greater than zero."""
+    while True:
+        try:
+            value = int(input(prompt))
+            if value <= 0:
+                print("Please enter a number greater than zero.")
+                continue
+            return value
+        except ValueError:
+            print("Please enter a valid whole number.")
+
 # ---------- Menu Actions ----------
 
 def handle_add(inventory: Inventory) -> None:
@@ -43,12 +81,8 @@ def handle_add(inventory: Inventory) -> None:
     product_id = input("Product ID: ").strip()
     name = input("Product Name: ").strip()
 
-    try:
-        price = float(input("Price: "))
-        stock = int(input("Stock Quantity: "))
-    except ValueError:
-        print("Error: Price must be a number, stock must be an integer.")
-        return
+    price = get_positive_float("Price: ")
+    stock = get_non_negative_int("Stock Quantity: ")
 
     # Create supplier
     print("\nSupplier Information")
@@ -65,18 +99,10 @@ def handle_add(inventory: Inventory) -> None:
     new_product: Product
 
     if type_choice == "1":
-        try:
-            weight = float(input("Weight (kg): "))
-        except ValueError:
-            print("Error: Weight must be a number.")
-            return
+        weight = get_positive_float("Weight (kg): ")
         new_product = ProductFactory.create("physical", product_id, name, price, stock, supplier, weight)
     elif type_choice == "2":
-        try:
-            download_size = float(input("Download size (MB): "))
-        except ValueError:
-            print("Error: Download size must be a number.")
-            return
+        download_size = get_positive_float("Download Size (MB): ")
         new_product = ProductFactory.create("digital", product_id, name, price, stock, supplier, download_size)
     else:
         print("Invalid type.")
@@ -85,11 +111,6 @@ def handle_add(inventory: Inventory) -> None:
     if inventory.add_product(new_product):
         print("Product added successfully!")
 
-    try:
-        new_product = ProductFactory.create(...)
-    except ValueError as e:
-        print(f"Error creating product: {e}")
-        return
 
 
 def handle_update(inventory: Inventory) -> None:
